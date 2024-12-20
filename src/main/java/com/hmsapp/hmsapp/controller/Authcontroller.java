@@ -17,12 +17,15 @@ import java.util.Optional;
 public class Authcontroller {
     private UserRepository userRepository;
     private UserService userService;
-    private LoginDto loginDto;
+  //  private LoginDto loginDto;
 
-    public Authcontroller(UserRepository userRepository) {
+
+
+    public Authcontroller(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
-
+    //localhost:8080/api/auth/sign-up
     @PostMapping("/sign-up")
     public ResponseEntity<?> createUser(@RequestBody User user ) {
 
@@ -47,16 +50,21 @@ public class Authcontroller {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
 
     }
-    @PostMapping ("/login")
-    public ResponseEntity<?>login(@RequestBody LoginDto login)
 
-    {
-
-        String token = userService.verifyLogin(loginDto);
+    //localhost:8080/api/auth/login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDto login) {
+        String token = userService.verifyLogin(login);
         if (token != null) {
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK); // Login successful
         }
-        return new ResponseEntity<>("invalid", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED); // Correct status for invalid login
+    }
+    //localhost:8080/api/auth/test
+    @RequestMapping("/test")
+    public String testing (){
+        System.out.println("testing");
+        return "testing";
     }
 
 
