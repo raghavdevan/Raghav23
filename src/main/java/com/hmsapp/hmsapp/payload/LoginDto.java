@@ -3,7 +3,7 @@ package com.hmsapp.hmsapp.payload;
 import lombok.Data;
 import lombok.Getter;
 
-@Data
+//@Data
 public class LoginDto {
     private String username;
     private String password;
